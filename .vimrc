@@ -105,6 +105,7 @@ call s:setDefaults({
     \ "enable_syntastic": 1,
     \ "enable_ycm": 1,
     \ "enable_ultisnips": 1,
+    \ "enable_previm": 1,
     \ })
 
 call s:setDefaults({
@@ -263,6 +264,11 @@ Plug 'godlygeek/tabular'
 Plug 'tpope/vim-markdown'
 " Rethinking Vim as a tool for writers
 Plug 'reedes/vim-pencil'
+
+if (g:enable_previm == 1)
+    " Vim plugin for preview.
+    Plug 'kannokanno/previm'
+endif
 
 "" HTML/Web
 
@@ -677,7 +683,7 @@ if (g:enable_tagbar == 1)
 
     " If you set this option the cursor will move to the Tagbar window when it is
     " opened.
-    let g:tagbar_autofocus = 1
+    let g:tagbar_autofocus = 1 
 
     " If you set this option the Tagbar window will automatically close when you
     " jump to a tag.
@@ -952,12 +958,17 @@ let g:vim_isort_map = '<leader>s'
 " under Python 3:
 "let g:vim_isort_python_version = 'python3'
 
+""" Previm
+
+let g:previm_open_cmd = "sensible-browser"
+
 """ Specific lang config
 
 "" Text/Markdown
 
-autocmd BufNewFile,BufReadPost *.md set filetype=markdown
-autocmd BufNewFile,BufReadPost *.mkd set filetype=markdown
+"autocmd BufNewFile,BufReadPost *.md set filetype=markdown
+"autocmd BufNewFile,BufReadPost *.mkd set filetype=markdown
+autocmd BufNewFile,BufRead *.{md,mdwn,mkd,mkdn,mark*} set filetype=markdown
 autocmd FileType markdown call pencil#init()
 autocmd FileType markdown setlocal shiftwidth=4 tabstop=4 softtabstop=4
 autocmd FileType markdown let g:AutoClosePairs_add = "* _ ~"
