@@ -106,6 +106,7 @@ call s:setDefaults({
     \ "enable_ycm": 1,
     \ "enable_ultisnips": 1,
     \ "enable_previm": 1,
+    \ "enable_ctrlp": 1,
     \ })
 
 call s:setDefaults({
@@ -179,6 +180,12 @@ Plug 'dbakker/vim-projectroot'
 if (g:enable_undotree ==1)
     " The ultimate undo history visualizer for VIM 
     Plug 'mbbill/undotree'
+endif
+
+
+if (g:enable_ctrlp == 1)
+    " Full path fuzzy file, buffer, mru, tag, ... finder for Vim.
+    Plug 'ctrlpvim/ctrlp.vim'
 endif
 
 " Yank history navigation
@@ -280,6 +287,10 @@ Plug 'lilydjwg/colorizer'
 """ JavaScript && Node.js
 
 if (g:lang_javascript == 1)
+    " Enhanced JavaScript Syntax for Vim
+    Plug 'jelera/vim-javascript-syntax'
+    " Javascript indenter (HTML indent is included)
+    " Plug 'vim-scripts/JavaScript-Indent'
     " Tern plugin for Vim
     Plug 'ternjs/tern_for_vim'
     " Vim Pug (formerly Jade) template engine syntax highlighting and indention
@@ -481,6 +492,31 @@ endfunction
 let g:rootmarkers = ['.projectroot', '.git', '.hg', '.svn', '.bzr', '_darcs', 'build.xml', 'package.json']
 
 autocmd BufEnter * call <SID>AutoProjectRootCD()
+
+""" ctrlp
+
+let g:ctrlp_map = '<leader> b'
+let g:ctrlp_cmd = 'CtrlP'
+
+"" When invoked without an explicit starting directory, CtrlP will set its
+"" local working directory according to this variable:
+"" 'c' - the directory of the current file.
+"" 'a' - the directory of the current file, unless it is a subdirectory of the
+""       cwd
+"" 'r' - the nearest ancestor of the current file that contains one of these
+""       directories or files: .git .hg .svn .bzr _darcs
+"" 'w' - modifier to "r": start search from the cwd instead of the current
+""       file's directory
+""  0 or '' (empty string) - disable this feature.
+let g:ctrlp_working_path_mode = 'ra'
+
+"" If a file is already open, open it again in a new pane instead of switching to the existing pane
+" let g:ctrlp_switch_buffer = 'et'
+
+let g:ctrlp_root_markers = ['.git', '.hg', '.svn', '.bzr', '_darcs', 'package.json', 'requirements.txt']
+
+
+let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
 
 """ undotree
 
@@ -703,7 +739,7 @@ if (g:enable_tagbar == 1)
 
     " If this variable is set to 1 then moving the cursor in the Tagbar window
     " will automatically show the current tag in the preview window.
-    let g:tagbar_autopreview = 1
+    let g:tagbar_autopreview = 0 
 endif
 
 """ vim-signify
