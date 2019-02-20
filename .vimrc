@@ -98,6 +98,7 @@ call s:setDefaults({
 
 call s:setDefaults({
     \ "enable_nerdtree": 1,
+    \ "enable_nerdcommenter": 1,
     \ "enable_tabman": 1,
     \ "enable_undotree": 1,
     \ "enable_airline": 1,
@@ -167,6 +168,11 @@ if (g:enable_nerdtree == 1)
     Plug 'jistr/vim-nerdtree-tabs'
     " Git support for NerdTree
     Plug 'Xuyuanp/nerdtree-git-plugin'
+endif
+
+if (g:enable_nerdcommenter == 1)
+    " Comment functions so powerful—no comment necessary.
+    Plug 'scrooloose/nerdcommenter'
 endif
 
 if (g:enable_tabman == 1)
@@ -644,6 +650,35 @@ if (g:enable_nerdtree == 1)
     " open nerdtree with the current file selected
     nmap ,t :NERDTreeTabsFind<CR>
 
+endif
+
+""" Nerd Commenter 
+"" See https://github.com/scrooloose/nerdcommenter
+
+if (g:enable_nerdcommenter)
+    " Add spaces after comment delimiters by default
+    let g:NERDSpaceDelims = 1
+
+    " Use compact syntax for prettified multi-line comments
+    let g:NERDCompactSexyComs = 1
+
+    " Align line-wise comment delimiters flush left instead of following code indentation
+    let g:NERDDefaultAlign = 'left'
+
+    " Set a language to use its alternate delimiters by default
+    let g:NERDAltDelims_java = 1
+
+    " Add your own custom formats or override the defaults
+    "let g:NERDCustomDelimiters = { 'c': { 'left': '/**','right': '*/' } }
+
+    " Allow commenting and inverting empty lines (useful when commenting a region)
+    let g:NERDCommentEmptyLines = 1
+
+    " Enable trimming of trailing whitespace when uncommenting
+    let g:NERDTrimTrailingWhitespace = 1
+
+    " Enable NERDCommenterToggle to check all selected lines is commented or not 
+    let g:NERDToggleCheckAllLines = 1
 endif
 
 """ Tabman config
