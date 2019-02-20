@@ -13,13 +13,13 @@
 "                                `._________`+.   `.   `.___
 "                                              SSt  `+----+'`
 "  https://wiki.exos.ninja/perfect.vim
-" 
+"
 "    +----------------------------------------------+
 "    |                                              |
 "    | DON'T TOUCH THIS FILE, use ~/.vim/config.vim |
 "    |                                              |
 "    +----------------------------------------------+
-" 
+"
 " ============================================================================
 " Vim-plug initialization
 " Avoid modify this section, unless you are very sure of what you are doing
@@ -67,7 +67,7 @@ endfunction
 function! s:setDefaults(obj)
     for [k, v] in items(a:obj)
         call s:setDefault("".k, "". v)
-        unlet k v 
+        unlet k v
     endfor
 endfunction
 
@@ -78,7 +78,7 @@ endif
 
 
 " Set ui font
-set gfn=CPMono_v07\ Plain\ For\ Powerline\ 9 
+set gfn=CPMono_v07\ Plain\ For\ Powerline\ 9
 "set gfn=BitstreamVeraSansMono\ Nerd\ Font\ 10
 
 
@@ -102,7 +102,7 @@ call s:setDefaults({
     \ "enable_undotree": 1,
     \ "enable_airline": 1,
     \ "enable_tagbar": 1,
-    \ "enable_syntastic": 1,
+    \ "enable_ale": 1,
     \ "enable_ycm": 1,
     \ "enable_ultisnips": 1,
     \ "enable_previm": 1,
@@ -157,7 +157,7 @@ endif
 
 """ General
 
-" Override configs by directory 
+" Override configs by directory
 Plug 'arielrossanigo/dir-configs-override.vim'
 
 if (g:enable_nerdtree == 1)
@@ -178,7 +178,7 @@ endif
 Plug 'dbakker/vim-projectroot'
 
 if (g:enable_undotree ==1)
-    " The ultimate undo history visualizer for VIM 
+    " The ultimate undo history visualizer for VIM
     Plug 'mbbill/undotree'
 endif
 
@@ -191,10 +191,10 @@ endif
 " Yank history navigation
 Plug 'vim-scripts/YankRing.vim'
 
-""" Look and feel 
+""" Look and feel
 
 " Adds file type glyphs/icons to many popular Vim plugins such as: NERDTree,
-" vim-airline, unite, vim-startify and many more 
+" vim-airline, unite, vim-startify and many more
 Plug 'ryanoasis/vim-devicons'
 
 if (g:enable_nerdtree == 1)
@@ -226,15 +226,10 @@ Plug 'tpope/vim-fugitive'
 " Sign column from version control system.
 Plug 'mhinz/vim-signify'
 
-if (g:enable_syntastic == 1)
-    " Languages code checker
-    Plug 'scrooloose/syntastic'
-    " Additional syntax checkers for the Vim plugin Syntastic
-    Plug '/myint/syntastic-extras'
-    " More checkers for Vim Syntastic Plugini (For golang)
-    Plug 'roktas/syntastic-more'
+if (g:enable_ale == 1)
+    "Asynchronous linting/fixing for Vim and Language Server Protocol (LSP) integration
+    Plug 'w0rp/ale'
 endif
-
 
 " Pending tasks list
 Plug 'fisadev/FixedTaskList.vim'
@@ -250,7 +245,7 @@ Plug 'michaeljsmith/vim-indent-object'
 Plug 'jeetsukumaran/vim-indentwise'
 
 if (g:enable_ycm == 1)
-    " A code-completion engine for Vim 
+    " A code-completion engine for Vim
     Plug 'Valloric/YouCompleteMe'
 endif
 
@@ -259,7 +254,7 @@ if (g:enable_ultisnips == 1)
     " SirVer/ultisnips!
     Plug 'SirVer/ultisnips'
     " Snippets are separated from the engine. Add this if you want them:
-    Plug 'honza/vim-snippets' 
+    Plug 'honza/vim-snippets'
 endif
 
 " Vim script for text filtering and alignment
@@ -267,7 +262,7 @@ Plug 'godlygeek/tabular'
 
 "" Text/Markdown
 
-" Vim Markdown runtime files 
+" Vim Markdown runtime files
 Plug 'tpope/vim-markdown'
 " Rethinking Vim as a tool for writers
 Plug 'reedes/vim-pencil'
@@ -295,7 +290,7 @@ if (g:lang_javascript == 1)
     Plug 'ternjs/tern_for_vim'
     " Vim Pug (formerly Jade) template engine syntax highlighting and indention
     Plug 'digitaltoad/vim-pug'
-    " Standalone JSDoc syntax for vim 
+    " Standalone JSDoc syntax for vim
     Plug 'othree/jsdoc-syntax.vim'
     " Generate JSDoc to your JavaScript code.
     Plug 'heavenshell/vim-jsdoc'
@@ -310,7 +305,7 @@ endif
 "" Python
 
 if (g:lang_python == 1)
-    " Vim plugin for working with python virtualenvs 
+    " Vim plugin for working with python virtualenvs
     Plug 'jmcantrell/vim-virtualenv'
     " Automatically sort python imports
     Plug 'fisadev/vim-isort'
@@ -394,12 +389,12 @@ endif
 " gvim
 if has('gui_running')
     execute "colorscheme " . gui_theme
-endif 
+endif
 
 """ Gui options
 
 " Remove menu bar
-set guioptions-=m 
+set guioptions-=m
 " Remove toolbar
 set guioptions-=T
 " Remove right-hand scroll bar
@@ -418,7 +413,7 @@ ca copy w !xclip -sel clip
 set directory=~/.vim/dirs/tmp
 set backup
 set backupdir=~/.vim/dirs/backupsv
-set undofile 
+set undofile
 set undodir=~/.vim/dirs/undos
 set viminfo+=n~/.vim/dirs/viminfo
 
@@ -438,9 +433,9 @@ endif
 " tab navigation mappings
 map tn :tabn<CR>
 map tp :tabp<CR>
-map tm :tabm 
-map tt :tabnew 
-map tT :tabnew<CR> 
+map tm :tabm
+map tt :tabnew
+map tT :tabnew<CR>
 map ts :tab split<CR>
 map <C-S-Right> :tabn<CR>
 imap <C-S-Right> <ESC>:tabn<CR>
@@ -458,13 +453,13 @@ imap <A-Up> <ESC><c-w>k
 imap <A-Down> <ESC><c-w>j
 
 " simple recursive grep
-nmap <leader>r :Ack 
+nmap <leader>r :Ack
 nmap <leader>wr :Ack <cword><CR>
 
-" Add ; to final 
-nmap ;; A; 
+" Add ; to final
+nmap ;; A;
 " Add , to final
-nmap ,, A, 
+nmap ,, A,
 
 " Copy to clipboard
 map <leader>cc :w !xsel -i -b<CR>
@@ -495,7 +490,7 @@ autocmd BufEnter * call <SID>AutoProjectRootCD()
 
 """ ctrlp
 
-let g:ctrlp_map = '<leader> b'
+let g:ctrlp_map = '<F5>'
 let g:ctrlp_cmd = 'CtrlP'
 
 "" When invoked without an explicit starting directory, CtrlP will set its
@@ -533,19 +528,19 @@ let g:yankring_history_dir = '~/.vim/dirs/'
 " See https://github.com/ryanoasis/vim-devicons
 
 if (g:patchedfont == 1)
-    " loading the plugin 
+    " loading the plugin
     let g:webdevicons_enable = 1
 
-    " adding the flags to NERDTree 
+    " adding the flags to NERDTree
     let g:webdevicons_enable_nerdtree = 1
 
-    " adding to vim-airline's tabline 
+    " adding to vim-airline's tabline
     let g:webdevicons_enable_airline_tabline = 1
 
-    " adding to vim-airline's statusline 
+    " adding to vim-airline's statusline
     let g:webdevicons_enable_airline_statusline = 1
 
-    " Force extra padding in NERDTree so that the filetype icons line up vertically 
+    " Force extra padding in NERDTree so that the filetype icons line up vertically
     let g:WebDevIconsNerdTreeGitPluginForceVAlign = 1
 
     " change the default character when no match found
@@ -557,9 +552,9 @@ if (g:patchedfont == 1)
     " enable pattern matching glyphs on folder/directory (enabled by default with 1)
     let g:DevIconsEnableFolderPatternMatching = 1
 else
-    let g:webdevicons_enable = 0 
-    let g:webdevicons_enable_nerdtree = 0 
-    let g:webdevicons_enable_airline_tabline = 0 
+    let g:webdevicons_enable = 0
+    let g:webdevicons_enable_nerdtree = 0
+    let g:webdevicons_enable_airline_tabline = 0
     let g:webdevicons_enable_airline_statusline = 0
     let g:WebDevIconsNerdTreeGitPluginForceVAlign = 0
     let g:WebDevIconsUnicodeDecorateFileNodesDefaultSymbol = '!'
@@ -568,7 +563,7 @@ else
 endif
 
 
-""" NerdTree && _NerdTreeTabs 
+""" NerdTree && _NerdTreeTabs
 "" See https://github.com/scrooloose/nerdtree/blob/master/README.markdown
 "" and https://github.com/jistr/vim-nerdtree-tabs
 
@@ -577,11 +572,11 @@ if (g:enable_nerdtree == 1)
     " Don;t show these file types
     let NERDTreeIgnore = ['\.pyc$', '\.pyo$', '\~$', '\.sw[^fv]$']
 
-    " Open NERDTree on gvim/macvim startup. (When set to 2, open only if 
+    " Open NERDTree on gvim/macvim startup. (When set to 2, open only if
     " directory was given as startup argument).
     let g:nerdtree_tabs_open_on_gui_startup = 1
 
-    " Open NERDTree on console vim startup. (When set to 2, open only if 
+    " Open NERDTree on console vim startup. (When set to 2, open only if
     " directory was given as startup argument).
     let g:nerdtree_tabs_open_on_console_startup = 2
 
@@ -613,21 +608,21 @@ if (g:enable_nerdtree == 1)
     "    let g:NERDTreeExtensionHighlightColor = {}
     "
     "    " sets the color of css files to blue
-    "    let g:NERDTreeExtensionHighlightColor['css'] = s:blue 
+    "    let g:NERDTreeExtensionHighlightColor['css'] = s:blue
     "
     "    " this line is needed to avoid error
-    "    let g:NERDTreeExactMatchHighlightColor = {}    
-    "    
+    "    let g:NERDTreeExactMatchHighlightColor = {}
+    "
     "    " sets the color for .gitignore files
     "    let g:NERDTreeExactMatchHighlightColor['.gitignore'] = s:git_orange
     "
     "    " this line is needed to avoid error
-    "    let g:NERDTreePatternMatchHighlightColor = {} 
+    "    let g:NERDTreePatternMatchHighlightColor = {}
     "
     "    " sets the color for files ending with _spec.rb
-    "    let g:NERDTreePatternMatchHighlightColor['.*_spec\.rb$'] = s:rspec_red 
+    "    let g:NERDTreePatternMatchHighlightColor['.*_spec\.rb$'] = s:rspec_red
     "
-        " let g:NERDTreeDirArrowExpandable = icon_expand 
+        " let g:NERDTreeDirArrowExpandable = icon_expand
         " let g:NERDTreeDirArrowCollapsible = icon_expanded
     endif
 
@@ -641,7 +636,7 @@ if (g:enable_nerdtree == 1)
         \ 'Dirty'     : icon_dirty,
         \ 'Clean'     : icon_clean,
         \ 'Ignored'   : icon_ignored,
-        \ 'Unknown'   : icon_unknow 
+        \ 'Unknown'   : icon_unknow
         \}
 
     " toggle nerdtree display
@@ -657,22 +652,22 @@ endif
 if (g:enable_tabman ==1)
     let g:tabman_toggle = '<f2>'
     let g:tabman_side = 'rigth'
-    let g:tabman_number = 0 
+    let g:tabman_number = 0
 endif
 
 """ Air Line
 
 if (g:enable_airline == 1)
 
-    let g:airline_powerline_fonts = 0 
+    let g:airline_powerline_fonts = 0
     let g:airline_theme = 'bubblegum'
     let g:airline#extensions#whitespace#enabled = 0
 
     let g:airline#extensions#tagbar#enabled = 1
 
-    let g:airline#extensions#syntastic#enabled = 1
+    let g:airline#extensions#ale#enabled = 1
 
-    let g:airline#extensions#tmuxline#enabled = 0 
+    let g:airline#extensions#tmuxline#enabled = 0
 
     let g:airline#extensions#tabline#enabled = 1
     let g:airline#extensions#tabline#left_sep = ' '
@@ -719,14 +714,14 @@ if (g:enable_tagbar == 1)
 
     " If you set this option the cursor will move to the Tagbar window when it is
     " opened.
-    let g:tagbar_autofocus = 1 
+    let g:tagbar_autofocus = 1
 
     " If you set this option the Tagbar window will automatically close when you
     " jump to a tag.
-    "let g:tagbar_autoclose = 0 
+    "let g:tagbar_autoclose = 0
 
     " If this option is set the tags are sorted according to their name. If it is
-    " unset they are sorted according to their order in the source file. 
+    " unset they are sorted according to their order in the source file.
     "let g:tagbar_sort = 0
 
     " Whether line numbers should be shown in the Tagbar window.
@@ -735,22 +730,22 @@ if (g:enable_tagbar == 1)
     "   1: Show absolute line numbers.
     "   2: Show relative line numbers.
     "  -1: Use the global line number settings.
-    let g:tagbar_show_linenumbers = 1 
+    let g:tagbar_show_linenumbers = 1
 
     " If this variable is set to 1 then moving the cursor in the Tagbar window
     " will automatically show the current tag in the preview window.
-    let g:tagbar_autopreview = 0 
+    let g:tagbar_autopreview = 0
 endif
 
 """ vim-signify
 
-" Update information 
+" Update information
 let g:signify_realtime = 1
 
 " Enable line highlighting in addition to using signs by default.
 let g:signify_line_highlight = 0
 
-let g:signify_sign_add               = icon_add 
+let g:signify_sign_add               = icon_add
 let g:signify_sign_delete            = icon_delete
 let g:signify_sign_delete_first_line = icon_delete_first_line
 let g:signify_sign_change            = icon_change
@@ -769,42 +764,70 @@ nmap <Leader>gi :SignifyList<CR>
 nmap <leader>gn <plug>(signify-next-hunk)
 nmap <leader>gp <plug>(signify-prev-hunk)
 
-""" Syntanstic
+""" ALE
 
-if (g:enable_syntastic == 1)
-    " Pasive mode
-    let g:syntastic_mode="passive"
+let g:ale_fixers = {
+\   '*': ['remove_trailing_lines', 'trim_whitespace'],
+\   'javascript': ['eslint'],
+\}
 
-    " check also when just opened the file
-    let g:syntastic_check_on_open = 1
+let g:ale_linters = {
+\   'javascript': ['eslint'],
+\   'jsx': ['stylelint', 'eslint'],
+\}
 
-    " don't put icons on the sign column (it hides the vcs status icons of signify)
-    let g:syntastic_check_on_wq = 1
-    let g:syntastic_enable_signs = 1 
+" Set this variable to 1 to fix files when you save them.
+let g:ale_fix_on_save = 1
 
-    let g:syntastic_enable_highlighting = 1
+" Enable completion where available.
+let g:ale_completion_enabled = 1
 
-    hi SpellBad ctermfg=red ctermbg=black guifg=red guibg=black
-    hi SpellCap ctermfg=yellow ctermbg=black guifg=yellow guibg=black
+" Only run linters named in ale_linters settings.
+let g:ale_linters_explicit = 1
 
-    "highlight link SyntasticErrorSign SignColumn
-    "highlight link SyntasticWarningSign SignColumn
-    "highlight link SyntasticStyleErrorSign SignColumn
-    "highlight link SyntasticStyleWarningSign SignColumn
+" Keep the sign gutter open at all times
+let g:ale_sign_column_always = 1
 
-    highlight OverLength ctermbg=red ctermfg=black guibg=#592929
+" Remove colors
+" highlight clear ALEErrorSign
+" highlight clear ALEWarningSign
 
-    let g:syntastic_error_symbol = icon_error 
-    let g:syntastic_warning_symbol = icon_warning
-    let g:syntastic_style_error_symbol = icon_error
-    let g:syntastic_style_warning_symbol = icon_warning
+" Lint on enter
+let g:ale_lint_on_enter = 1
 
-    " let g:syntastic_always_populate_loc_list = 1
-    " let g:syntastic_auto_loc_list = 1
+" enable/disabling highlighting
+let g:ale_set_highlights = 1
 
-    nmap <leader>e :Errors<CR>
+" Show 5 lines of errors (default: 10)
+let g:ale_list_window_size = 5
 
-endif
+"let g:ale_sign_error = icon_error
+"let g:ale_sign_warning = icon_warning
+
+"hi link ALEErrorSign    Error
+"hi link ALEWarningSign  Warning
+
+"hi link ALEError    Error
+"hi link ALEWarning  Warning
+
+let g:ale_sign_error = "◉"
+let g:ale_sign_warning = "◉"
+
+highlight clear ALEErrorSign
+highlight clear ALEWarningSign
+
+highlight ALEErrorSign ctermfg=9 ctermbg=15 guifg=#FF0500
+highlight ALEWarningSign ctermfg=11 ctermbg=15 guifg=#ED6237
+
+hi ALEError ctermfg=11 ctermbg=15 guifg=#EEEEEE guibg=#730500
+" hi ALEWarning  Warning
+
+let g:ale_echo_msg_error_str = icon_error
+let g:ale_echo_msg_warning_str = icon_warning
+let g:ale_echo_msg_format = '[%linter%] %severity% %s'
+
+nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+nmap <silent> <C-j> <Plug>(ale_next_wrap)
 
 """ TaskList
 
@@ -868,7 +891,7 @@ if (g:enable_ycm == 1)
     " gutter.
     "let g:ycm_warning_symbol = '>>'
 
-    let g:ycm_error_symbol = icon_error 
+    let g:ycm_error_symbol = icon_error
     let g:ycm_warning_symbol = icon_warning
 
     " When this option is set, YCM will highlight regions of text that are related
@@ -927,8 +950,8 @@ if (g:enable_ultisnips == 1)
         let l:path = ProjectRootGuess() . "/snippets"
         if isdirectory(l:path)
             let g:UltiSnipsSnippetDirectories = [l:path]
-            " for file in split(glob(l:spath), '\n')        
-            "     g:UltiSnipsSnippetDirectories = 
+            " for file in split(glob(l:spath), '\n')
+            "     g:UltiSnipsSnippetDirectories =
             " endfor
         endif
     endfunction
@@ -938,16 +961,16 @@ if (g:enable_ultisnips == 1)
 endif
 
 """ Markdown
-" https://github.com/plasticboy/vim-markdown 
+" https://github.com/plasticboy/vim-markdown
 
 let g:markdown_fenced_languages = ['javascript']
 
 """ vim-pencil
 " See https://github.com/reedes/vim-pencil
 
- 
+
 let g:pencil#wrapModeDefault = 'hard'
-let g:pencil#autoformat = 1 
+let g:pencil#autoformat = 1
 let g:pencil#textwidth = 79
 
 
@@ -1012,31 +1035,28 @@ autocmd FileType markdown inoremap <silent> <Bar>   <Bar><Esc>:call <SID>alignMa
 
 "" HTML
 autocmd FileType html setlocal shiftwidth=2 tabstop=2 softtabstop=2
+autocmd FileType html,css,vue,jsx EmmetInstall
 
 "" Python
 
 if (g:lang_python == 1)
     autocmd FileType htmldjango setlocal shiftwidth=2 tabstop=2 softtabstop=2
-    autocmd FileType htmldjango let b:surround_45 = "{{ \r }}" 
+    autocmd FileType htmldjango let b:surround_45 = "{{ \r }}"
 endif
 
 "" Ruby
 if (g:lang_ruby == 1)
     autocmd FileType ruby let g:AutoClosePairs_add = "|"
-    autocmd FileType ruby UltiSnipsAddFiletypes ruby 
+    autocmd FileType ruby UltiSnipsAddFiletypes ruby
 endif
 
 "" JavaScript && Node.js
 if (g:lang_javascript == 1)
     autocmd FileType pug setlocal shiftwidth=2 tabstop=2 softtabstop=2
-    autocmd FileType javascript let b:surround_45 = "${\r}" 
+    autocmd FileType javascript let b:surround_45 = "${\r}"
     autocmd FileType javascript map ys` cs"`cs'`
     autocmd FileType javascript nmap <C-l> <Plug>(jsdoc)
     " autocmd FileType javascript UltiSnipsAddFiletypes javascript-jasmine
-
-    "let g:syntastic_javascript_checkers = ['jshint']
-    "let g:syntastic_javascript_eslint_exec = '/usr/bin/env eslint'
-    "let g:syntastic_javascript_jshint_exec = '/usr/bin/env jshint'
 
     if (g:enable_syntastic == 1)
         autocmd FileType javascript let g:syntastic_javascript_checkers =
@@ -1048,6 +1068,17 @@ if (g:lang_javascript == 1)
           \ executable("jshint") ? ['jshint'] :
           \     ['standard']
     endif
+
+    if (g:enable_ale == 1)
+        augroup FiletypeGroup
+            autocmd!
+            au BufNewFile,BufRead *.jsx set filetype=javascript.jsx
+        augroup END
+
+        " let g:ale_linters = {'jsx': ['stylelint', 'eslint']}
+        let g:ale_linter_aliases = {'jsx': 'css'}
+    endif
+
 
     autocmd FileType javascript UltiSnipsAddFiletypes javascript
     autocmd FileType javascript UltiSnipsAddFiletypes javascript-mocha
