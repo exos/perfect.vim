@@ -102,7 +102,7 @@ call s:setDefaults({
     \ "enable_undotree": 1,
     \ "enable_airline": 1,
     \ "enable_tagbar": 1,
-    \ "enable_syntastic": 1,
+    \ "enable_ale": 1,
     \ "enable_ycm": 1,
     \ "enable_ultisnips": 1,
     \ "enable_previm": 1,
@@ -226,15 +226,10 @@ Plug 'tpope/vim-fugitive'
 " Sign column from version control system.
 Plug 'mhinz/vim-signify'
 
-if (g:enable_syntastic == 1)
-    " Languages code checker
-    Plug 'scrooloose/syntastic'
-    " Additional syntax checkers for the Vim plugin Syntastic
-    Plug '/myint/syntastic-extras'
-    " More checkers for Vim Syntastic Plugini (For golang)
-    Plug 'roktas/syntastic-more'
+if (g:enable_ale == 1)
+    "Asynchronous linting/fixing for Vim and Language Server Protocol (LSP) integration
+    Plug 'w0rp/ale'
 endif
-
 
 " Pending tasks list
 Plug 'fisadev/FixedTaskList.vim'
@@ -769,42 +764,70 @@ nmap <Leader>gi :SignifyList<CR>
 nmap <leader>gn <plug>(signify-next-hunk)
 nmap <leader>gp <plug>(signify-prev-hunk)
 
-""" Syntanstic
+""" ALE
 
-if (g:enable_syntastic == 1)
-    " Pasive mode
-    let g:syntastic_mode="passive"
+let g:ale_fixers = {
+\   '*': ['remove_trailing_lines', 'trim_whitespace'],
+\   'javascript': ['eslint'],
+\}
 
-    " check also when just opened the file
-    let g:syntastic_check_on_open = 1
+let g:ale_linters = {
+\   'javascript': ['eslint'],
+\   'jsx': ['stylelint', 'eslint'],
+\}
 
-    " don't put icons on the sign column (it hides the vcs status icons of signify)
-    let g:syntastic_check_on_wq = 1
-    let g:syntastic_enable_signs = 1 
+" Set this variable to 1 to fix files when you save them.
+let g:ale_fix_on_save = 1
 
-    let g:syntastic_enable_highlighting = 1
+" Enable completion where available.
+let g:ale_completion_enabled = 1
 
-    hi SpellBad ctermfg=red ctermbg=black guifg=red guibg=black
-    hi SpellCap ctermfg=yellow ctermbg=black guifg=yellow guibg=black
+" Only run linters named in ale_linters settings.
+let g:ale_linters_explicit = 1
 
-    "highlight link SyntasticErrorSign SignColumn
-    "highlight link SyntasticWarningSign SignColumn
-    "highlight link SyntasticStyleErrorSign SignColumn
-    "highlight link SyntasticStyleWarningSign SignColumn
+" Keep the sign gutter open at all times
+let g:ale_sign_column_always = 1
 
-    highlight OverLength ctermbg=red ctermfg=black guibg=#592929
+" Remove colors
+" highlight clear ALEErrorSign
+" highlight clear ALEWarningSign
 
-    let g:syntastic_error_symbol = icon_error 
-    let g:syntastic_warning_symbol = icon_warning
-    let g:syntastic_style_error_symbol = icon_error
-    let g:syntastic_style_warning_symbol = icon_warning
+" Lint on enter
+let g:ale_lint_on_enter = 1
 
-    " let g:syntastic_always_populate_loc_list = 1
-    " let g:syntastic_auto_loc_list = 1
+" enable/disabling highlighting
+let g:ale_set_highlights = 1
 
-    nmap <leader>e :Errors<CR>
+" Show 5 lines of errors (default: 10)
+let g:ale_list_window_size = 5
 
-endif
+"let g:ale_sign_error = icon_error
+"let g:ale_sign_warning = icon_warning
+
+"hi link ALEErrorSign    Error
+"hi link ALEWarningSign  Warning
+
+"hi link ALEError    Error
+"hi link ALEWarning  Warning
+
+let g:ale_sign_error = "◉"
+let g:ale_sign_warning = "◉"
+
+highlight clear ALEErrorSign
+highlight clear ALEWarningSign
+
+highlight ALEErrorSign ctermfg=9 ctermbg=15 guifg=#FF0500
+highlight ALEWarningSign ctermfg=11 ctermbg=15 guifg=#ED6237
+
+hi ALEError ctermfg=11 ctermbg=15 guifg=#EEEEEE guibg=#730500
+" hi ALEWarning  Warning
+
+let g:ale_echo_msg_error_str = icon_error
+let g:ale_echo_msg_warning_str = icon_warning
+let g:ale_echo_msg_format = '[%linter%] %severity% %s'
+
+nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+nmap <silent> <C-j> <Plug>(ale_next_wrap)
 
 """ TaskList
 
@@ -1035,10 +1058,6 @@ if (g:lang_javascript == 1)
     autocmd FileType javascript nmap <C-l> <Plug>(jsdoc)
     " autocmd FileType javascript UltiSnipsAddFiletypes javascript-jasmine
 
-    "let g:syntastic_javascript_checkers = ['jshint']
-    "let g:syntastic_javascript_eslint_exec = '/usr/bin/env eslint'
-    "let g:syntastic_javascript_jshint_exec = '/usr/bin/env jshint'
-
     if (g:enable_syntastic == 1)
         autocmd FileType javascript let g:syntastic_javascript_checkers =
           \ HasConfig('.eslintrc', expand('<amatch>:h')) ? ['eslint'] :
@@ -1049,6 +1068,17 @@ if (g:lang_javascript == 1)
           \ executable("jshint") ? ['jshint'] :
           \     ['standard']
     endif
+
+    if (g:enable_ale == 1)
+        augroup FiletypeGroup
+            autocmd!
+            au BufNewFile,BufRead *.jsx set filetype=javascript.jsx
+        augroup END
+
+        " let g:ale_linters = {'jsx': ['stylelint', 'eslint']}
+        let g:ale_linter_aliases = {'jsx': 'css'}
+    endif
+
 
     autocmd FileType javascript UltiSnipsAddFiletypes javascript
     autocmd FileType javascript UltiSnipsAddFiletypes javascript-mocha
